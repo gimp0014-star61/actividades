@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Control inhibitorio y agilidad mental</title>
+<style>
+:root{--bg:#f4f1ea;--card:#fff;--ink:#1d2330;--muted:#5d6475;--accent:#3a5bd9;--accent2:#e8743b;--ok:#2e9e5b;--bad:#d64545;--stage:#1b1f2a;--line:#e3ded3}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+.wrap{max-width:820px;margin:0 auto;padding:16px}
+header.top{background:var(--stage);color:#fff;padding:22px 16px}
+header.top .wrap{padding:0 16px}
+header.top h1{margin:0;font-size:clamp(22px,4.5vw,32px);line-height:1.2}
+header.top p{margin:6px 0 0;color:#b9c0d4}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin:16px 0}
+h2{margin:0 0 10px;font-size:22px}
+h3{margin:18px 0 8px;font-size:17px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.center{text-align:center}
+.btn{appearance:none;border:0;border-radius:12px;padding:13px 22px;font-size:16px;font-weight:700;cursor:pointer;background:var(--accent);color:#fff}
+.btn:hover{filter:brightness(1.08)}
+.btn.sec{background:#e9e6ff;color:#2a3b8f}
+.btn.ghost{background:transparent;color:var(--accent);border:2px solid var(--accent)}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+label{font-weight:600;font-size:14px}
+input[type=text],textarea{width:100%;padding:11px 12px;border:1px solid #cfc9bc;border-radius:10px;font:inherit;background:#fdfcf9}
+textarea{min-height:90px;resize:vertical}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tasks{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.tk{border:1px solid var(--line);border-radius:12px;padding:12px;background:#faf8f3}
+.tk b{display:block}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:99px;margin-top:4px}
+.tag.ci{background:#e3e9ff;color:#2a3b8f}
+.tag.am{background:#ffe8da;color:#9a4316}
+.steps{display:flex;gap:6px;margin:14px 0 0}
+.steps span{flex:1;height:8px;border-radius:99px;background:#dcd7cb}
+.steps span.done{background:var(--ok)}
+.steps span.now{background:var(--accent)}
+.stage{background:var(--stage);border-radius:16px;height:270px;display:flex;align-items:center;justify-content:center;color:#fff;user-select:none;-webkit-user-select:none;overflow:hidden}
+.fix{font-size:48px;color:#7d869c}
+.count{font-size:80px;font-weight:800;color:#9fb0ff}
+.word{font-size:clamp(42px,10vw,78px);font-weight:900;letter-spacing:2px}
+.arrows{font-size:clamp(46px,11vw,80px);letter-spacing:.12em;font-weight:700}
+.shape{width:130px;height:130px}
+.shape.circle{border-radius:50%;background:#43c463}
+.shape.square{border-radius:10px;background:#ef5350}
+.rulebox{border:6px solid;border-radius:18px;padding:14px 34px;text-align:center;background:#232838}
+.rulebox .lab{font-size:15px;font-weight:800;letter-spacing:1px}
+.rulebox .num{font-size:78px;font-weight:900;line-height:1.1}
+.fb{height:30px;margin-top:8px;text-align:center;font-weight:800;font-size:18px}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.runhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;gap:10px}
+.resp{display:grid;gap:10px;margin-top:6px}
+.resp.c4{grid-template-columns:repeat(4,1fr)}
+.resp.c2{grid-template-columns:1fr 1fr}
+.resp.c1{grid-template-columns:1fr}
+.rbtn{border:0;border-radius:12px;padding:16px 8px;font-size:16px;font-weight:800;cursor:pointer;color:#1d2330;background:#e8e4da;touch-action:manipulation}
+.rbtn:active{transform:scale(.97)}
+.example{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0}
+.example .ex{flex:1;min-width:150px;background:var(--stage);border-radius:12px;padding:14px;color:#fff;text-align:center}
+.example .ex small{display:block;color:#b9c0d4;margin-top:6px;font-size:13px}
+.keys{background:#f1efe8;border-radius:10px;padding:10px 14px;font-size:15px}
+kbd{background:#fff;border:1px solid #bbb;border-bottom-width:3px;border-radius:6px;padding:1px 7px;font-family:inherit;font-weight:700;font-size:14px}
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:15px}
+td,th{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}
+th{background:#f1efe8}
+td:last-child{text-align:right;font-weight:700}
+.note{background:#fff7e6;border-left:4px solid #f0a92e;padding:10px 14px;border-radius:8px;font-size:15px}
+.big{font-size:40px;font-weight:900;color:var(--accent)}
+.q{margin:16px 0}
+.pans{display:none}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:10px;opacity:0;transition:.3s;pointer-events:none}
+#toast.show{opacity:1}
+@media (max-width:600px){
+  .grid2,.tasks{grid-template-columns:1fr}
+  .resp.c4{grid-template-columns:1fr 1fr}
+  .stage{height:220px}
+  .card{padding:16px}
+}
+@media print{
+  body{background:#fff}
+  header.top{background:#fff;color:#000;padding:0}
+  header.top p{color:#333}
+  .noprint,.steps{display:none!important}
+  .card{border:1px solid #999;break-inside:avoid}
+  textarea{display:none}
+  .pans{display:block;border:1px solid #ccc;padding:8px;border-radius:6px;min-height:40px;white-space:pre-wrap}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <h1>Dinámicas de control inhibitorio y agilidad mental</h1>
+  <p>Funciones ejecutivas del sistema nervioso · Actividad interactiva</p>
+</div></header>
+<main class="wrap" id="app"></main>
+<div id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const app=$('#app');
+const S={nombre:'',grupo:'',res:{}};
+let respond=null,keymap=null;
+document.addEventListener('keydown',e=>{
+  if(!keymap)return;
+  const k=e.key===' '?'space':e.key.toLowerCase();
+  if(k in keymap){e.preventDefault();if(respond)respond(keymap[k]);}
+});
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const mean=a=>a.length?Math.round(a.reduce((x,y)=>x+y,0)/a.length):null;
+const ms=v=>v==null?'—':v+' ms';
+const pct=(a,b)=>Math.round(a/b*100);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200)}
+
+/* ---------- Estadística común para tareas congruente / incongruente ---------- */
+function statsCI(recs,nombreEfecto){
+  const ok=recs.filter(r=>r.ok).length;
+  const a=mean(recs.filter(r=>r.ok&&r.cond==='cong').map(r=>r.rt));
+  const b=mean(recs.filter(r=>r.ok&&r.cond==='incong').map(r=>r.rt));
+  const errI=recs.filter(r=>!r.ok&&r.cond==='incong').length;
+  const ef=(a!=null&&b!=null)?b-a:null;
+  return{acc:pct(ok,recs.length),key:ef,rows:[
+    ['Aciertos',`${ok} / ${recs.length} (${pct(ok,recs.length)} %)`],
+    ['Tiempo medio – congruentes',ms(a)],
+    ['Tiempo medio – incongruentes',ms(b)],
+    ['Errores en incongruentes',errI],
+    [nombreEfecto,ef==null?'—':(ef>0?'+':'')+ef+' ms']]};
+}
+
+/* ---------- Definición de las dinámicas ---------- */
+const COL=[{n:'ROJO',c:'#ef5350'},{n:'AZUL',c:'#42a5f5'},{n:'VERDE',c:'#66bb6a'},{n:'AMARILLO',c:'#ffd54f'}];
+
+const TASKS=[
+{
+  id:'stroop',titulo:'1. Efecto Stroop',tipo:'ci',
+  resumen:'Di el color de la tinta, no la palabra.',
+  intro:`<p>Aparecerá el nombre de un color escrito con tinta de un color. <b>Debes elegir el color de la TINTA</b> e ignorar lo que dice la palabra.</p>
+  <div class="example">
+    <div class="ex"><span class="word" style="font-size:34px;color:${COL[1].c}">AZUL</span><small>Respuesta: AZUL (congruente)</small></div>
+    <div class="ex"><span class="word" style="font-size:34px;color:${COL[2].c}">ROJO</span><small>Respuesta: VERDE (incongruente)</small></div>
+  </div>
+  <p class="keys">Teclas <kbd>1</kbd> rojo · <kbd>2</kbd> azul · <kbd>3</kbd> verde · <kbd>4</kbd> amarillo — o pulsa los botones.</p>`,
+  hint:'Elige el color de la tinta',
+  respClass:'c4',
+  btns:COL.map((c,i)=>({label:`${i+1} · ${c.n}`,v:i,style:`background:${c.c}`})),
+  keymap:{'1':0,'2':1,'3':2,'4':3},
+  timeout:3000,fix:[400,750],
+  makeTrials(){const t=[];for(let i=0;i<12;i++){const a=i%4;t.push({word:a,ink:a,cond:'cong'});let b;do{b=Math.floor(Math.random()*4)}while(b===a);t.push({word:a,ink:b,cond:'incong'})}return shuffle(t)},
+  render(t,el){el.innerHTML=`<span class="word" style="color:${COL[t.ink].c}">${COL[t.word].n}</span>`},
+  isCorrect:(t,r)=>r===t.ink,
+  stats:r=>statsCI(r,'Efecto Stroop (interferencia)'),
+  explica:'Leer es una conducta tan automatizada que tu cerebro procesa la palabra aunque no quieras. En los ensayos incongruentes tienes que <b>inhibir</b> esa lectura automática, y por eso sueles tardar más o equivocarte más. Esa diferencia de tiempo es el <b>efecto Stroop</b>.'
+},
+{
+  id:'gonogo',titulo:'2. Go / No-Go',tipo:'ci',
+  resumen:'Pulsa rápido… pero frena cuando toca.',
+  intro:`<p>Irán apareciendo figuras muy deprisa. <b>Pulsa lo más rápido posible con el círculo verde</b>, pero <b>NO pulses nada con el cuadrado rojo</b>.</p>
+  <div class="example">
+    <div class="ex"><div class="shape circle" style="width:70px;height:70px;margin:auto"></div><small>Círculo verde → ¡PULSA!</small></div>
+    <div class="ex"><div class="shape square" style="width:70px;height:70px;margin:auto"></div><small>Cuadrado rojo → ¡FRENA!</small></div>
+  </div>
+  <p class="keys">Tecla <kbd>Espacio</kbd> o el botón grande. Tienes menos de un segundo en cada figura, así que la mayoría de las veces tendrás que pulsar: el reto es frenar a tiempo.</p>`,
+  hint:'Pulsa solo con el círculo verde',
+  respClass:'c1',
+  btns:[{label:'¡PULSA! (Espacio)',v:'go',style:'background:#43c463;color:#fff;padding:22px;font-size:20px'}],
+  keymap:{space:'go'},
+  timeout:750,fix:[300,800],
+  makeTrials(){const t=[];for(let i=0;i<30;i++)t.push({go:true});for(let i=0;i<10;i++)t.push({go:false});shuffle(t);
+    /* que los dos primeros sean "go" para crear el hábito de pulsar */
+    for(let k=0;k<2;k++){if(!t[k].go){const j=t.findIndex((x,ix)=>ix>2&&x.go);[t[k],t[j]]=[t[j],t[k]]}}return t},
+  render(t,el){el.innerHTML=`<div class="shape ${t.go?'circle':'square'}"></div>`},
+  isCorrect:(t,r)=>t.go?r==='go':r===null,
+  feedback:(t,r,ok)=>t.go?(ok?'✓':'⏱ ¡Demasiado lento!'):(ok?'✓ ¡Bien frenado!':'✗ ¡No debías pulsar!'),
+  stats(recs){
+    const go=recs.filter(r=>r.go),ng=recs.filter(r=>!r.go);
+    const hit=go.filter(r=>r.ok).length,om=go.length-hit,fa=ng.filter(r=>!r.ok).length;
+    const ok=recs.filter(r=>r.ok).length;
+    return{acc:pct(ok,recs.length),key:fa,rows:[
+      ['Aciertos totales',`${ok} / ${recs.length} (${pct(ok,recs.length)} %)`],
+      ['Círculos pulsados a tiempo',`${hit} / ${go.length}`],
+      ['Omisiones (no pulsaste en verde)',om],
+      ['Errores de comisión (pulsaste en rojo)',`${fa} / ${ng.length}`],
+      ['Tiempo medio de reacción',ms(mean(go.filter(r=>r.ok).map(r=>r.rt)))]]};
+  },
+  explica:'Al repetir muchas veces la misma acción (pulsar), se crea una <b>respuesta dominante</b>. Los <b>errores de comisión</b> (pulsar en el cuadrado rojo) muestran las veces en que no conseguiste frenar a tiempo esa respuesta: son la medida principal del control inhibitorio motor.'
+},
+{
+  id:'flanker',titulo:'3. Flechas distractoras (Flanker)',tipo:'ci',
+  resumen:'Atiende solo a la flecha central.',
+  intro:`<p>Verás una fila de cinco flechas. <b>Responde hacia donde apunta la flecha del CENTRO</b> e ignora las de los lados.</p>
+  <div class="example">
+    <div class="ex"><span class="arrows" style="font-size:30px">→→→→→</span><small>Respuesta: derecha</small></div>
+    <div class="ex"><span class="arrows" style="font-size:30px">→→←→→</span><small>Respuesta: izquierda</small></div>
+  </div>
+  <p class="keys">Teclas <kbd>←</kbd> y <kbd>→</kbd> — o pulsa los botones.</p>`,
+  hint:'¿Hacia dónde apunta la flecha central?',
+  respClass:'c2',
+  btns:[{label:'← Izquierda',v:'L',style:'background:#cfd8ff'},{label:'Derecha →',v:'R',style:'background:#cfd8ff'}],
+  keymap:{arrowleft:'L',arrowright:'R'},
+  timeout:2000,fix:[400,700],
+  makeTrials(){const t=[];for(let i=0;i<12;i++){const d=i%2?'L':'R';t.push({dir:d,cond:'cong'});t.push({dir:d,cond:'incong'})}return shuffle(t)},
+  render(t,el){const ch=d=>d==='L'?'←':'→';const c=ch(t.dir),f=t.cond==='cong'?c:ch(t.dir==='L'?'R':'L');el.innerHTML=`<span class="arrows">${f}${f}${c}${f}${f}</span>`},
+  isCorrect:(t,r)=>r===t.dir,
+  stats:r=>statsCI(r,'Efecto de interferencia'),
+  explica:'Aquí el control inhibitorio actúa sobre la <b>atención</b>: tienes que filtrar los estímulos que rodean al importante. Cuando las flechas de los lados apuntan en sentido contrario, compiten con la respuesta correcta y aumenta tu tiempo de reacción.'
+},
+{
+  id:'switch',titulo:'4. Cambio de regla (agilidad mental)',tipo:'am',
+  resumen:'Cambia de regla según el color del marco.',
+  intro:`<p>Aparecerá un número dentro de un marco. <b>El color del marco te dice qué regla usar</b>, y puede cambiar en cualquier momento:</p>
+  <div class="example">
+    <div class="ex" style="border:4px solid #42a5f5"><b style="color:#9ccfff">MARCO AZUL</b><small>¿Es PAR o IMPAR?<br>← par · impar →</small></div>
+    <div class="ex" style="border:4px solid #ffa040"><b style="color:#ffc58f">MARCO NARANJA</b><small>¿Es MENOR o MAYOR que 5?<br>← menor · mayor →</small></div>
+  </div>
+  <p class="keys">Teclas <kbd>←</kbd> / <kbd>→</kbd> (o <kbd>F</kbd> / <kbd>J</kbd>) — o pulsa los botones. La izquierda siempre es <b>PAR / MENOR</b> y la derecha <b>IMPAR / MAYOR</b>.</p>`,
+  hint:'Fíjate primero en el color del marco',
+  respClass:'c2',
+  btns:[{label:'← PAR / MENOR',v:'L',style:'background:#dfe9ff'},{label:'IMPAR / MAYOR →',v:'R',style:'background:#ffe6d2'}],
+  keymap:{arrowleft:'L',arrowright:'R',f:'L',j:'R'},
+  timeout:3500,fix:[400,700],
+  makeTrials(){const nums=[1,2,3,4,6,7,8,9];const t=[];let rule=Math.random()<.5?'par':'mag';
+    for(let i=0;i<32;i++){if(i>0&&Math.random()<.45)rule=rule==='par'?'mag':'par';
+      t.push({rule,n:nums[Math.floor(Math.random()*nums.length)],sw:i===0?null:rule!==t[i-1].rule})}return t},
+  render(t,el){const par=t.rule==='par';el.innerHTML=`<div class="rulebox" style="border-color:${par?'#42a5f5':'#ffa040'}"><div class="lab" style="color:${par?'#9ccfff':'#ffc58f'}">${par?'¿PAR o IMPAR?':'¿MENOR o MAYOR que 5?'}</div><div class="num">${t.n}</div></div>`},
+  isCorrect(t,r){const want=t.rule==='par'?(t.n%2===0?'L':'R'):(t.n<5?'L':'R');return r===want},
+  stats(recs){
+    const ok=recs.filter(r=>r.ok).length;
+    const rep=mean(recs.filter(r=>r.ok&&r.sw===false).map(r=>r.rt));
+    const sw=mean(recs.filter(r=>r.ok&&r.sw===true).map(r=>r.rt));
+    const errSw=recs.filter(r=>!r.ok&&r.sw===true).length,nSw=recs.filter(r=>r.sw===true).length;
+    const cost=(rep!=null&&sw!=null)?sw-rep:null;
+    return{acc:pct(ok,recs.length),key:cost,rows:[
+      ['Aciertos',`${ok} / ${recs.length} (${pct(ok,recs.length)} %)`],
+      ['Tiempo medio – misma regla',ms(rep)],
+      ['Tiempo medio – cambio de regla',ms(sw)],
+      ['Errores tras un cambio',`${errSw} / ${nSw}`],
+      ['Coste de cambio',cost==null?'—':(cost>0?'+':'')+cost+' ms']]};
+  },
+  explica:'La <b>flexibilidad cognitiva</b> (agilidad mental) es la capacidad de soltar una regla y adoptar otra. Al cambiar, el cerebro tiene que desactivar la regla anterior y cargar la nueva: ese esfuerzo se nota en el <b>coste de cambio</b>, el tiempo extra que necesitas cuando la regla cambia.'
+}];
+
+/* ---------- Motor de ensayos ---------- */
+function runTrials(T,trials){return new Promise(res=>{
+  const recs=[];let i=0;const stim=$('#stim'),fb=$('#fb'),prog=$('#prog');
+  const next=()=>{
+    if(i>=trials.length){respond=null;return res(recs)}
+    const t=trials[i];prog.textContent=`Ensayo ${i+1} de ${trials.length}`;
+    stim.innerHTML='<span class="fix">+</span>';
+    setTimeout(()=>{
+      fb.textContent='';fb.className='fb';
+      T.render(t,stim);
+      const t0=performance.now();let done=false,to;
+      const finish=r=>{
+        if(done)return;done=true;clearTimeout(to);respond=null;
+        const rt=r===null?null:Math.round(performance.now()-t0);
+        const ok=T.isCorrect(t,r);recs.push({...t,r,rt,ok});
+        fb.textContent=T.feedback?T.feedback(t,r,ok):(ok?'✓':(r===null?'⏱ ¡Demasiado lento!':'✗ Error'));
+        fb.className='fb '+(ok?'ok':'bad');
+        stim.innerHTML='';i++;setTimeout(next,ok?300:650);
+      };
+      respond=finish;to=setTimeout(()=>finish(null),T.timeout);
+    },rnd(T.fix[0],T.fix[1]));
+  };next();
+})}
+
+/* ---------- Pantallas ---------- */
+function stepper(i){return `<div class="steps noprint">${TASKS.map((_,k)=>`<span class="${k<i?'done':k===i?'now':''}"></span>`).join('')}<span class="${i>=TASKS.length?'now':''}"></span></div>`}
+
+function screenStart(){
+  app.innerHTML=`
+  <div class="card">
+    <h2>¿Qué vas a entrenar?</h2>
+    <p>El <b>control inhibitorio</b> es la capacidad de <b>frenar una respuesta automática o impulsiva</b> para dar la respuesta adecuada: no lanzarte antes del pitido de salida, no picar en el amago de un rival o no contestar lo primero que se te pasa por la cabeza.</p>
+    <p>La <b>agilidad mental</b> o <b>flexibilidad cognitiva</b> es la capacidad de <b>cambiar rápidamente de regla, de estrategia o de punto de vista</b>.</p>
+    <p>Ambas forman parte de las <b>funciones ejecutivas</b>, junto con la memoria de trabajo, y dependen sobre todo de la <b>corteza prefrontal</b> del lóbulo frontal, en conexión con otras zonas como los ganglios basales.</p>
+    <h3>Las cuatro dinámicas</h3>
+    <div class="tasks">${TASKS.map(t=>`<div class="tk"><b>${t.titulo}</b><span class="muted small">${t.resumen}</span><br><span class="tag ${t.tipo}">${t.tipo==='ci'?'Control inhibitorio':'Agilidad mental'}</span></div>`).join('')}</div>
+  </div>
+  <div class="card">
+    <h2>Antes de empezar</h2>
+    <div class="grid2">
+      <div><label for="nom">Nombre y apellidos</label><input id="nom" type="text" value="${esc(S.nombre)}" autocomplete="name"></div>
+      <div><label for="gru">Curso y grupo</label><input id="gru" type="text" value="${esc(S.grupo)}" placeholder="p. ej. 1º Bach A"></div>
+    </div>
+    <p class="note" style="margin-top:14px">⏱ Unos 8 minutos. Hazlo en un sitio tranquilo y, si puedes, con ordenador y teclado. Intenta ser <b>rápido/a y preciso/a</b> a la vez. Al final copiarás tus resultados y tus respuestas para entregarlos en Classroom.</p>
+    <div class="row" style="margin-top:14px"><button class="btn" id="go">Empezar →</button><span id="warn" class="small" style="color:var(--bad)"></span></div>
+  </div>`;
+  $('#go').onclick=()=>{
+    S.nombre=$('#nom').value.trim();S.grupo=$('#gru').value.trim();
+    if(!S.nombre){$('#warn').textContent='Escribe tu nombre para continuar.';$('#nom').focus();return}
+    screenIntro(0);
+  };
+}
+
+function screenIntro(i){
+  const T=TASKS[i];
+  app.innerHTML=`${stepper(i)}
+  <div class="card">
+    <span class="tag ${T.tipo}">${T.tipo==='ci'?'Control inhibitorio':'Agilidad mental'}</span>
+    <h2 style="margin-top:8px">${T.titulo}</h2>
+    ${T.intro}
+    <div class="row" style="margin-top:16px"><button class="btn" id="go">Estoy listo/a</button></div>
+  </div>`;
+  window.scrollTo(0,0);
+  $('#go').onclick=()=>screenRun(i);
+}
+
+async function screenRun(i){
+  const T=TASKS[i];
+  app.innerHTML=`${stepper(i)}
+  <div class="card">
+    <div class="runhead"><b>${T.titulo}</b><span id="prog" class="muted small"></span></div>
+    <div class="stage" id="stim"></div>
+    <div id="fb" class="fb"></div>
+    <div class="resp ${T.respClass}" id="resp"></div>
+    <p class="muted small center">${T.hint}</p>
+  </div>`;
+  window.scrollTo(0,0);
+  const resp=$('#resp');
+  T.btns.forEach(b=>{const el=document.createElement('button');el.className='rbtn';el.innerHTML=b.label;if(b.style)el.style.cssText=b.style;
+    el.addEventListener('pointerdown',e=>{e.preventDefault();if(respond)respond(b.v)});resp.appendChild(el)});
+  const stim=$('#stim');
+  keymap=T.keymap;
+  for(const n of [3,2,1]){stim.innerHTML=`<span class="count">${n}</span>`;await wait(700)}
+  const recs=await runTrials(T,T.makeTrials());
+  keymap=null;
+  S.res[T.id]=T.stats(recs);
+  screenAfter(i);
+}
+
+function tableRows(rows){return `<table>${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table>`}
+
+function screenAfter(i){
+  const T=TASKS[i],R=S.res[T.id],last=i===TASKS.length-1;
+  app.innerHTML=`${stepper(i+1)}
+  <div class="card">
+    <h2>${T.titulo} · tus resultados</h2>
+    ${tableRows(R.rows)}
+    <p class="note">💡 ${T.explica}</p>
+    <div class="row" style="margin-top:14px">
+      <button class="btn" id="next">${last?'Ver resultados finales →':'Siguiente dinámica →'}</button>
+      <button class="btn ghost" id="again">Repetir esta dinámica</button>
+    </div>
+  </div>`;
+  window.scrollTo(0,0);
+  $('#next').onclick=()=>last?screenFinal():screenIntro(i+1);
+  $('#again').onclick=()=>screenIntro(i);
+}
+
+const PREGUNTAS=[
+  '¿En qué dinámica cometiste más errores? ¿Por qué crees que te costó más?',
+  'Explica con tus palabras por qué en los ensayos incongruentes del Stroop se tarda más en responder.',
+  '¿Qué región del encéfalo está más relacionada con el control inhibitorio y la flexibilidad cognitiva? ¿En qué lóbulo se encuentra?',
+  'Pon un ejemplo de tu vida diaria o de un deporte en el que uses el control inhibitorio y otro en el que necesites agilidad mental.',
+  '¿Qué factores crees que pueden empeorar estas capacidades (sueño, cansancio, estrés, uso del móvil…)? Justifica tu respuesta.'
+];
+const answers=PREGUNTAS.map(()=>'');
+
+function screenFinal(){
+  const media=Math.round(TASKS.reduce((s,t)=>s+S.res[t.id].acc,0)/TASKS.length);
+  const fecha=new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
+  app.innerHTML=`${stepper(TASKS.length)}
+  <div class="card">
+    <h2>Resultados finales</h2>
+    <p><b>${esc(S.nombre)}</b>${S.grupo?' · '+esc(S.grupo):''} · ${fecha}</p>
+    <p class="muted" style="margin-bottom:0">Precisión media en las cuatro dinámicas</p>
+    <div class="big">${media} %</div>
+    ${TASKS.map(t=>`<h3>${t.titulo}</h3>${tableRows(S.res[t.id].rows)}`).join('')}
+    <p class="note">Estos resultados no son un diagnóstico: dependen del dispositivo, de la concentración del momento y de la práctica. Lo interesante es <b>comparar las condiciones</b> (congruente frente a incongruente, misma regla frente a cambio).</p>
+  </div>
+  <div class="card">
+    <h2>Reflexión</h2>
+    <p class="muted">Responde a las preguntas. Después pulsa <b>Copiar resultados y respuestas</b> y pégalo en tu entrega de Classroom, o guárdalo como PDF y adjúntalo.</p>
+    ${PREGUNTAS.map((p,k)=>`<div class="q"><label for="q${k}">${k+1}. ${p}</label><textarea id="q${k}" data-k="${k}">${esc(answers[k])}</textarea><div class="pans" id="p${k}"></div></div>`).join('')}
+    <div class="row noprint">
+      <button class="btn" id="copy">📋 Copiar resultados y respuestas</button>
+      <button class="btn sec" id="print">🖨️ Guardar como PDF</button>
+      <button class="btn ghost" id="restart">Volver a empezar</button>
+    </div>
+  </div>`;
+  window.scrollTo(0,0);
+  app.querySelectorAll('textarea').forEach(ta=>ta.addEventListener('input',()=>{answers[+ta.dataset.k]=ta.value}));
+  $('#copy').onclick=()=>copyText(buildText(media,fecha));
+  $('#print').onclick=()=>{PREGUNTAS.forEach((_,k)=>{$('#p'+k).textContent=answers[k]||'(sin respuesta)'});window.print()};
+  $('#restart').onclick=()=>{if(confirm('Se borrarán tus resultados. ¿Volver a empezar?')){S.res={};answers.fill('');screenStart()}};
+}
+
+function buildText(media,fecha){
+  let t=`DINÁMICAS DE CONTROL INHIBITORIO Y AGILIDAD MENTAL\nAlumno/a: ${S.nombre}\nGrupo: ${S.grupo||'—'}\nFecha: ${fecha}\nPrecisión media: ${media} %\n\n`;
+  TASKS.forEach(T=>{t+=`${T.titulo}\n`;S.res[T.id].rows.forEach(r=>{t+=`  - ${r[0]}: ${r[1]}\n`});t+='\n'});
+  t+='REFLEXIÓN\n';
+  PREGUNTAS.forEach((p,k)=>{t+=`${k+1}. ${p}\n${answers[k].trim()||'(sin respuesta)'}\n\n`});
+  return t;
+}
+function copyText(txt){
+  const fallback=()=>{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');toast('Copiado. Pégalo en Classroom.')}catch(e){toast('No se pudo copiar automáticamente')}ta.remove()};
+  if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(txt).then(()=>toast('Copiado. Pégalo en Classroom.'),fallback)}else fallback();
+}
+
+screenStart();
+</script>
+</body>
+</html>
